@@ -1,10 +1,6 @@
-use std::{fs, io::ErrorKind};
-
-use crate::utils::get_config;
+use std::{env, fs, io::ErrorKind};
 
 pub fn run(_namespace: Option<String>) {
-    let config = get_config();
-
     let config_dirname = dirs::data_dir()
         .expect("Data directory not found")
         .join("cloup");
@@ -18,11 +14,16 @@ pub fn run(_namespace: Option<String>) {
         }
     }
 
+    let config_file = config_dirname.join(".config");
+    if config_file.is_file() && !config_file.exists() {
+        return;
+    }
+
     // TODO: Improve config file, use config-managable crate for this
 
     fs::write(
         config_dirname.join(".config"),
-        format!("template_dir={:?}", config.current_dir),
+        format!("template_dir={:?}", env::current_dir().unwrap()),
     )
     .expect("An error occurred when writing config file");
 
