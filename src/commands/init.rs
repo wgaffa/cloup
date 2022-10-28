@@ -1,6 +1,11 @@
 use std::{env, fs, io::ErrorKind};
 
 pub fn run(_namespace: Option<String>) {
+    if env::var("DOCKER_INIT").is_ok() {
+        eprintln!("Init should not be run inside this docker image as it's already been run. Exiting...");
+        return;
+    }
+
     let config_dirname = dirs::data_dir()
         .expect("Data directory not found")
         .join("cloup");

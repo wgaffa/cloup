@@ -20,6 +20,7 @@ RUN cloup init
 VOLUME ["/root/.local/share/cloup"]
 
 FROM init AS runtime
+ENV DOCKER_INIT=1
 WORKDIR /cloup
 
 ENTRYPOINT ["cloup"]
